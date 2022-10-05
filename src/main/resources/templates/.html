@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>YN Shopping Mall</title>
+<!-- Favicon-->
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+<!-- Bootstrap icons-->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+	rel="stylesheet" />
+<!-- Core theme CSS (includes Bootstrap)-->
+<link href="css/styles.css" rel="stylesheet" />
+</head>
+<body>
+	<!-- Sign In Modal-->
+	<div class="modal fade" id="signin-modal" tabindex="-1"
+		aria-hidden="true">
+		<div
+			class="modal-dialog modal-lg modal-dialog-centered p-2 my-0 mx-auto"
+			style="max-width: 450px;">
+			<div class="modal-content">
+				<div class="modal-body px-0 py-2 py-sm-0">
+					<button class="btn-close position-absolute top-0 end-0 mt-3 me-3"
+						type="button" data-bs-dismiss="modal"></button>
+					<div class="row mx-2 align-items-center">
+						<div class="col-md-12 px-5 pt-5 pb-5 px-sm-8 pb-sm-8 pt-md-8">
+							<!-- <a class="btn btn-outline-info d-block w-100 mb-3" href="#">
+						<i class="fi-google fs-lg me-1"></i>구글로 로그인하기</a> -->
+							<a class="btn btn-outline-warning d-block w-100 mb-3"
+								onclick="popupKakaoLogin()" href="#"> <i
+								class="fi-chat-circle fs-lg me-1"></i> 카카오로 로그인하기
+							</a>
+							<div class="d-flex align-items-center py-3 mb-1">
+								<hr class="w-100">
+								<div class="px-3">Or</div>
+								<hr class="w-100">
+							</div>
+							<div id="loginwrap">
+								<form class="needs-validation" novalidate method="post"
+									action="loginOk" onsubmit="return checks()">
+									<table id="logint">
+										<div class="mb-3">
+											<label class="form-label mb-2" for="signin-email">아이디</label>
+											<input class="form-control" type="text" id="signin-email"
+												name="id" size="20" placeholder="아이디를 입력하세요" required>
+										</div>
+										<div class="mb-3">
+											<div
+												class="d-flex align-items-center justify-content-between mb-2">
+												<label class="form-label mb-0" for="signin-password">비밀번호</label>
+												<a class="fs-sm" href="#pwfind-modal" data-bs-toggle="modal"
+													data-bs-dismiss="modal">비밀번호를 잊으셨나요?</a>
+											</div>
+											<div class="mb-3">
+												<div class="password-toggle">
+													<input class="form-control" type="password"
+														id="signin-password" name="pw" size="20"
+														placeholder="비밀번호를 입력하세요" required> <label
+														class="password-toggle-btn"
+														aria-label="Show/hide password"> <input
+														class="password-toggle-check" type="checkbox"> <span
+														class="password-toggle-indicator"></span>
+													</label>
+												</div>
+											</div>
+											<div class="form-check mb-3">
+												<input class="form-check-input" type="checkbox"
+													id="agree-to-terms"> <label
+													class="form-check-label" for="agree-to-terms">로그인
+													유지</label>
+											</div>
+										</div>
+										<div id="loginmenu">
+											<button class="btn btn-primary btn-lg d-block w-100"
+												type="submit">로그인</button>
+											<div class="mt-3 mt-sm-4">
+												<p style="font-size: 14px; display: inline-block;">아직
+													회원가입을 하지 않으셨나요?</p>
+												<a class="fs-sm" href="#signup-modal" data-bs-toggle="modal"
+													data-bs-dismiss="modal" style="float: right">회원가입</a>
+											</div>
+										</div>
+									</table>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Find PW Modal-->
+	<div class="modal fade" id="pwfind-modal" tabindex="-1"
+		aria-hidden="true">
+		<div
+			class="modal-dialog modal-xl modal-dialog-centered p-2 my-0 mx-auto"
+			style="max-width: 450px;">
+			<div class="modal-content">
+				<div class="modal-body px-0 py-30 py-md-50">
+					<button class="btn-close position-absolute top-0 end-0 mt-3 me-3"
+						type="button" data-bs-dismiss="modal"></button>
+					<div class="row mx-2 align-items-center">
+						<div id="pwwrap">
+							<c:if test="${empty pwdok}">
+								<br>
+								<h5 class="pwtitle">아이디와 이름을 입력해주세요</h5>
+								<form class="needs-validation" novalidate method="post"
+									action="pwFindOk" onsubmit="return pwFindCheck()">
+									<table id="pwt">
+										<div class="mb-3">
+											<label class="form-label mb-2" for="pwfind-id">아이디</label> <input
+												class="form-control" type="text" id="pwfind-id" name="id"
+												size="20" placeholder="아이디를 입력하세요" required>
+										</div>
+										<div class="mb-5">
+											<label class="form-label mb-2" for="pwfind-name">이름</label> <input
+												class="form-control" type="text" id="pwfind-name"
+												name="name" size="20" placeholder="이름을 입력하세요" required>
+										</div>
+									</table>
+									<div id="pwmenu">
+										<button class="btn btn-primary d-block w-100" type="submit"
+											data-target="#pwfindok-modal" data-bs-toggle="modal"
+											data-bs-dismiss="modal">비밀번호 찾기</button>
+									</div>
+								</form>
+							</c:if>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Sign Up Modal-->
+	<div class="modal fade" id="signup-modal" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered p-2 my-0 mx-auto"
+			style="max-width: 500px;">
+			<div class="modal-content" id="joinwrap">
+				<div class="modal-body px-0 py-2 py-sm-0">
+					<button class="btn-close position-absolute top-0 end-0 mt-3 me-3"
+						type="button" data-bs-dismiss="modal"></button>
+					<div class="row mx-2 align-items-center">
+						<div class="col-md-12 px-5 pt-5 pb-5 px-sm-8 pb-sm-8 pt-md-8">
+							<form class="needs-validation" novalidate="" name="f"
+								method="post" action="joinOk" onsubmit="return check()"
+								enctype="multipart/form-data">
+								<table id="joint">
+									<div class="mb-3">
+										<label class="form-label;box" for="signup-id">아이디</label><br>
+										<input class="form-control" type="text"
+											style="width: 250px; float: left" id="signup-id" name="id"
+											size="14" placeholder="아이디를 입력하세요" required="" /> <input
+											class="btn btn-translucent-primary w-20" type="button"
+											style="float: right" value="중복확인" onclick="idcheck()" />
+										<div id="idcheck"></div>
+									</div>
+									<br>
+									<br>
+									<div class="mb-3">
+										<label class="form-label" for="signup-password">비밀번호</label>
+										<div class="password-toggle">
+											<input class="form-control" type="password"
+												id="signup-password" placeholder="비밀번호를 8자리 이상 입력하세요"
+												minlength="8" name="pw" size="14" required="" />
+											<label class="password-toggle-btn" aria-label="Show/hide password"> 
+											<input class="password-toggle-check" type="checkbox"> 
+											<span class="password-toggle-indicator"></span>
+											</label>
+										</div>
+									</div>
+									<div class="mb-3">
+										<label class="form-label" for="signup-password-confirm">비밀번호
+											확인</label>
+										<div class="password-toggle">
+											<input class="form-control" type="password"
+												id="signup-password-confirm" name="pw2" minlength="8"
+												size="14" required="" /> <label class="password-toggle-btn"
+												aria-label="Show/hide password"> <input
+												class="password-toggle-check" type="checkbox"> <span
+												class="password-toggle-indicator"></span>
+											</label>
+										</div>
+									</div>
+									<div class="mb-3">
+										<label class="form-label" for="signup-name">이름</label> <input
+											class="form-control" type="text" id="signup-name" size="14"
+											name="name" placeholder="이름을 입력하세요" required="" />
+									</div>
+									<div class="mb-3">
+										<label class="form-label" for="signup-jumin1">주민번호</label> 
+										<input class="form-control" type="text" id="signup-jumin1" size="14"
+											name="jumin1" placeholder="주민번호 앞자리를 입력하세요" required="" />-
+											<input class="form-control" type="text" id="signup-jumin2" size="14"
+											name="name" placeholder="주민번호 뒷자리를 입력하세요" required="" />
+									</div>
+									<div class="mb-1">
+										<label class="form-label" for="signup-email">Email</label><br>
+										<input class="form-control" type="email"
+											style="width: 275px; float: left" id="signup-email"
+											name="mail" size="10" placeholder="이메일을 입력하세요"
+											required="required" /> <input
+											class="btn btn-translucent-primary w-20"
+											id=signup-email-butten type="button"
+											style="width: 82px; float: right" value="인증"
+											onclick="send();" />
+									</div>
+									<br>
+									<br>
+									<div class="mb-3" id="mailtoken">
+										<input class="form-control" type="text"
+											style="width: 275px; float: left;" id="signup-emailtoken"
+											name="token" size="10" placeholder="인증번호를 입력하세요" required="" />
+										<input class="btn btn-translucent-primary w-20"
+											id=maildoublecheck type="button" style="float: right"
+											value="확인" onclick="mailcheck()" />
+									</div>
+									<br>
+									<div class="mb-3">
+										<label class="form-label" for="signup-tel">연락처</label> <input
+											class="form-control" type="text" id="signup-tel" name="tel"
+											size="20" maxlength="20" value="${tel}"
+											placeholder="연락처를 입력하세요" required="" />
+									</div>
+									<div class="mb-3">
+										<label class="form-label" for="signup-post">우편번호</label><br>
+										<input class="form-control" type="text"
+											style="width: 200px; float: left" id="signup-post"
+											name="post" size="5" placeholder="우편번호" required="" readonly
+											onclick="postSearch()" /> <input
+											class="btn btn-translucent-primary w-20" type="button"
+											style="float: right" value="우편번호 검색" required=""
+											onclick="openDaumPostcode()" />
+									</div>
+									<br>
+									<br>
+									<div class="mb-3">
+										<label class="form-label" for="signup-address">주소</label> <input
+											class="form-control" type="text" id="signup-address"
+											placeholder="주소를 입력하세요" size="50" name="addr1" required=""
+											readonly onclick="postSearch()" />
+									</div>
+									<div class="mb-3">
+										<label class="form-label" for="signup-address-detail">상세주소</label>
+										<input class="form-control" type="text"
+											id="signup-address-detail" placeholder="상세주소 입력" name="addr2"
+											size="37" required="" />
+									</div>
+								</table>
+								<div id="joinmenu">
+									<button class="btn btn-primary d-block w-100" value="회원가입"
+										type="submit">회원가입</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Navigation-->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container px-4 px-lg-5">
+			<a class="navbar-brand" href="#!">YN Shopping</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+					<li class="nav-item"><a class="nav-link active"
+						aria-current="page" href="#!">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
+						role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="#!">All Products</a></li>
+							<li><hr class="dropdown-divider" /></li>
+							<li><a class="dropdown-item" href="#!">Popular Items</a></li>
+							<li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+						</ul></li>
+				</ul>
+				<form class="d-flex">
+					<button class="btn btn-outline-dark" type="submit">
+						<i class="bi-cart-fill me-1"></i> Cart <span
+							class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+					</button>
+				</form>
+				<a class="btn btn-sm text-primary d-none d-lg-block order-lg-3"
+					href="#signin-modal" data-bs-toggle="modal"><i
+					class="fi-user me-2"></i>로그인</a>
+			</div>
+		</div>
+	</nav>
+	<!-- Header-->
+	<header class="bg-dark py-5">
+		<div class="container px-4 px-lg-5 my-5">
+			<div class="text-center text-white">
+				<h1 class="display-4 fw-bolder">Shop in style</h1>
+				<p class="lead fw-normal text-white-50 mb-0">With this shop
+					hompeage template</p>
+			</div>
+		</div>
+	</header>
+	<!-- Section-->
+	<section class="py-5">
+		<div class="container px-4 px-lg-5 mt-5">
+			<div
+				class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+				<div class="col mb-5">
+					<div class="card h-100">
+						<!-- Product image-->
+						<img class="card-img-top"
+							src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+						<!-- Product details-->
+						<div class="card-body p-4">
+							<div class="text-center">
+								<!-- Product name-->
+								<h5 class="fw-bolder">Fancy Product</h5>
+								<!-- Product price-->
+								$40.00 - $80.00
+							</div>
+						</div>
+						<!-- Product actions-->
+						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+							<div class="text-center">
+								<a class="btn btn-outline-dark mt-auto" href="#">View
+									options</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col mb-5">
+					<div class="card h-100">
+						<!-- Sale badge-->
+						<div class="badge bg-dark text-white position-absolute"
+							style="top: 0.5rem; right: 0.5rem">Sale</div>
+						<!-- Product image-->
+						<img class="card-img-top"
+							src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+						<!-- Product details-->
+						<div class="card-body p-4">
+							<div class="text-center">
+								<!-- Product name-->
+								<h5 class="fw-bolder">Special Item</h5>
+								<!-- Product reviews-->
+								<div
+									class="d-flex justify-content-center small text-warning mb-2">
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+								</div>
+								<!-- Product price-->
+								<span class="text-muted text-decoration-line-through">$20.00</span>
+								$18.00
+							</div>
+						</div>
+						<!-- Product actions-->
+						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+							<div class="text-center">
+								<a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col mb-5">
+					<div class="card h-100">
+						<!-- Sale badge-->
+						<div class="badge bg-dark text-white position-absolute"
+							style="top: 0.5rem; right: 0.5rem">Sale</div>
+						<!-- Product image-->
+						<img class="card-img-top"
+							src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+						<!-- Product details-->
+						<div class="card-body p-4">
+							<div class="text-center">
+								<!-- Product name-->
+								<h5 class="fw-bolder">Sale Item</h5>
+								<!-- Product price-->
+								<span class="text-muted text-decoration-line-through">$50.00</span>
+								$25.00
+							</div>
+						</div>
+						<!-- Product actions-->
+						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+							<div class="text-center">
+								<a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col mb-5">
+					<div class="card h-100">
+						<!-- Product image-->
+						<img class="card-img-top"
+							src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+						<!-- Product details-->
+						<div class="card-body p-4">
+							<div class="text-center">
+								<!-- Product name-->
+								<h5 class="fw-bolder">Popular Item</h5>
+								<!-- Product reviews-->
+								<div
+									class="d-flex justify-content-center small text-warning mb-2">
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+								</div>
+								<!-- Product price-->
+								$40.00
+							</div>
+						</div>
+						<!-- Product actions-->
+						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+							<div class="text-center">
+								<a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col mb-5">
+					<div class="card h-100">
+						<!-- Sale badge-->
+						<div class="badge bg-dark text-white position-absolute"
+							style="top: 0.5rem; right: 0.5rem">Sale</div>
+						<!-- Product image-->
+						<img class="card-img-top"
+							src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+						<!-- Product details-->
+						<div class="card-body p-4">
+							<div class="text-center">
+								<!-- Product name-->
+								<h5 class="fw-bolder">Sale Item</h5>
+								<!-- Product price-->
+								<span class="text-muted text-decoration-line-through">$50.00</span>
+								$25.00
+							</div>
+						</div>
+						<!-- Product actions-->
+						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+							<div class="text-center">
+								<a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col mb-5">
+					<div class="card h-100">
+						<!-- Product image-->
+						<img class="card-img-top"
+							src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+						<!-- Product details-->
+						<div class="card-body p-4">
+							<div class="text-center">
+								<!-- Product name-->
+								<h5 class="fw-bolder">Fancy Product</h5>
+								<!-- Product price-->
+								$120.00 - $280.00
+							</div>
+						</div>
+						<!-- Product actions-->
+						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+							<div class="text-center">
+								<a class="btn btn-outline-dark mt-auto" href="#">View
+									options</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col mb-5">
+					<div class="card h-100">
+						<!-- Sale badge-->
+						<div class="badge bg-dark text-white position-absolute"
+							style="top: 0.5rem; right: 0.5rem">Sale</div>
+						<!-- Product image-->
+						<img class="card-img-top"
+							src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+						<!-- Product details-->
+						<div class="card-body p-4">
+							<div class="text-center">
+								<!-- Product name-->
+								<h5 class="fw-bolder">Special Item</h5>
+								<!-- Product reviews-->
+								<div
+									class="d-flex justify-content-center small text-warning mb-2">
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+								</div>
+								<!-- Product price-->
+								<span class="text-muted text-decoration-line-through">$20.00</span>
+								$18.00
+							</div>
+						</div>
+						<!-- Product actions-->
+						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+							<div class="text-center">
+								<a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col mb-5">
+					<div class="card h-100">
+						<!-- Product image-->
+						<img class="card-img-top"
+							src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+						<!-- Product details-->
+						<div class="card-body p-4">
+							<div class="text-center">
+								<!-- Product name-->
+								<h5 class="fw-bolder">Popular Item</h5>
+								<!-- Product reviews-->
+								<div
+									class="d-flex justify-content-center small text-warning mb-2">
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+									<div class="bi-star-fill"></div>
+								</div>
+								<!-- Product price-->
+								$40.00
+							</div>
+						</div>
+						<!-- Product actions-->
+						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+							<div class="text-center">
+								<a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Footer-->
+	<footer class="py-5 bg-dark">
+		<div class="container">
+			<p class="m-0 text-center text-white">Copyright &copy; Your
+				Website 2022</p>
+		</div>
+	</footer>
+	<!-- Bootstrap core JS-->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Core theme JS-->
+	<script src="js/scripts.js"></script>
+</body>
+</html>
