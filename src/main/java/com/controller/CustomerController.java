@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.apache.commons.mail.HtmlEmail;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -26,20 +27,48 @@ import com.service.CustomerService;
 public class CustomerController {
 	
 	private final Logger log = LoggerFactory.getLogger(CustomerController.class);
-
 	
 	@Autowired // Autowired된 객체는 사용자가 직접 new로 생성하는 것이 아닌 Spring이 객체를 생성해서 주입
 	private CustomerService customerService;
 	
+	// 아이디 중복확인
+		// @ResponseBody : 서버로 보낸 json데이터를 자바 객체로 매핑
+		@PostMapping("idcheck")
+		@ResponseBody
+	    public int idcheck(@RequestParam("id") String id) throws Exception {
+	        log.info("customercontroller idcheck()");
+	        int result = 0;
+	        if(id != null) result = customerService.idcheck(id);
+	        return result;  
+		}        
+		
+		// 회원가입 페이지 불러오기
+		@GetMapping("joinpage")
+		public String joinpage() {
+			return "modal";
+		}
+		
+		// 회원가입 인증
+		@PostMapping(value="join")
+		public String join(Customer customer) throws Exception { 
+			log.info("customercontroller join()");
+	        boolean b = customerService.join(customer);
+	        log.info(customer.toString());
+	        if(b) {
+	            return "main";
+	        }
+	        return "modal";
+	    }
 	
 	// 로그인 페이지 불러오기(페이지이동 GetMapping)
 	@GetMapping("loginpage")
 	public String loginpage() {
-		return "login";
+		return "modal";
 	}
 	
 	// 로그인 인증(값 상태를 변경하므로 PostMapping)
 	@PostMapping(value="login")
+	@ResponseBody
 	public String login(@RequestParam Map<String, String> map, Model model, HttpSession session) throws Exception {
 		try {
 			if (map.get("id") == null || map.get("pw") == null) {
@@ -47,9 +76,9 @@ public class CustomerController {
 				return "customer/loginerror";
 			}
 			log.info("customercontroller login()");
-		Customer customer = customerService.login(map);
-			if (customer != null) {
-				session.setAttribute("customer", customer);
+		Customer login = customerService.login(map);
+			if (login != null) {
+				session.setAttribute("customer", login);
 			} else {
 				model.addAttribute("msg", "아이디 또는 비밀번호가 올바르지 않습니다.");
 				return "customer/loginerror";
@@ -62,34 +91,15 @@ public class CustomerController {
 		return "main";
 	} // end
 	
-	// 아이디 중복확인
-	// @ResponseBody : 서버로 보낸 json데이터를 자바 객체로 매핑
-	@PostMapping("idcheck")
-	@ResponseBody
-    public int idcheck(@RequestParam("id") String id) throws Exception {
-        log.info("customercontroller idcheck()");
-        int result = 0;
-        if(id != null) result = customerService.idcheck(id);
-        return result;  
-	}        
+		// 로그아웃
+		@PostMapping(value = "logout")
+		public String logout(HttpServletRequest request) {
+			HttpSession session = request.getSession();
+			session.invalidate();
+			return "main";
+		}
 	
-	// 회원가입 페이지 불러오기
-	@GetMapping("joinpage")
-	public String joinpage() {
-		return "madal";
-	}
 	
-	// 회원가입 인증
-	@PostMapping(value="join")
-	public String join(Customer customer) throws Exception { 
-		log.info("customercontroller join()");
-        boolean b = customerService.join(customer);
-        log.info(customer.toString());
-        if(b) {
-            return "main";
-        }
-        return "modal";
-    }
 	// 비밀번호 찾기 페이지 불러오기
 		@GetMapping(value = "pwfindpage")
 		public String pwfindpage() {
@@ -140,4 +150,11 @@ public class CustomerController {
 //				return "modal";
 //			}
 //		}
+		
+		// 마이페이지 불러오기(페이지이동 GetMapping)
+		@GetMapping("mypage")
+		public String mypage() {
+			return "customer/mypage";
+		}
+		
 }

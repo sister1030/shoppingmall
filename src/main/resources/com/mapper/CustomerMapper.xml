@@ -9,7 +9,7 @@
 	<!-- 로그인 -->
 	<!-- id:@Mapper에서 정의한 이름을 동일하게 맞춰줘야함, parameterType: 파라미터의 자료형을 넣어줌 resultType 
 		: select 된 데이터를 반환할 (그릇)을 정해주는것 -->
-	<select id="login" parameterType="map" resultType="integer">
+	<select id="login" parameterType="map" resultType="com.dto.Customer">
 		select * from customer where id=#{id} and pw=#{pw}
 	</select>
 

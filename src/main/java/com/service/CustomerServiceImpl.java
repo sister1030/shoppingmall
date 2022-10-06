@@ -40,8 +40,6 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public boolean join(Customer customer) throws Exception {
         int n = customerMapper.join(customer);
-        System.out.println("name"+customer.getName());
-        System.out.println("addr1"+customer.getAddr1());
         return n > 0;
     }
 	// 회원목록조회

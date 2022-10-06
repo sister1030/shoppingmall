@@ -4,6 +4,8 @@
 
 	<!-- Navigation-->
 	 <div th:fragment="fragment-nav">
+	 <!-- 로그인 실패시  -->
+	 <th:block th:if="${login == null}"> 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" th:href="@{main}"><img src="img/logo.jpg" id="logo"/></a>
@@ -35,12 +37,50 @@
                       <div th:replace="modal.html :: fragment-modal"></div>
                      <a class="btn btn-outline-dark" th:href="@{#signin-modal}" data-bs-toggle="modal"><i class="fi-user me-2"></i>login</a>
 				</form>
-				 <form class="d-flex">
-                     <a class="btn btn-outline-dark" th:href="@{/}">mypage</a>
+                </div>
+            </div>
+        </nav>
+        </th:block>
+        <!--로그인 성공시 -->
+        <th:block th:if="${login != null}">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" th:href="@{main}"><img src="img/logo.jpg" id="logo"/></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{main}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/}">About</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" th:href="@{/}">All Products</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:href="@{/}">Popular Items</a></li>
+                                <li><a class="dropdown-item" href="customer/manager">New Arrivals</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <div th:replace="cart/cart.html :: fragment-cart"></div>
+                        <button class="btn btn-outline-dark" type="button" data-toggle="modal" data-target="#cartModal">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        </button>
+                   </form>
+                     &nbsp
+                      <form class="d-flex">
+                      <div th:replace="modal.html :: fragment-modal"></div>
+                     <a class="btn btn-outline-dark" th:href="@{#signin-modal}" data-bs-toggle="modal"><i class="fi-user me-2"></i>logout</a>
+				</form>
+				 <form class="d-flex" th:action="@{/}">
+                     <a class="btn btn-outline-dark" th:href="@{mypage}">mypage</a>
 				</form>
                 </div>
             </div>
         </nav>
+        </th:block>
 </div>
 </body>
 </html>

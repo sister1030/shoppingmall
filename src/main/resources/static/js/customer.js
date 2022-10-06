@@ -1,4 +1,5 @@
-﻿function openDaumPostcode() {
+﻿// 우편번호
+function openDaumPostcode() {
 	new daum.Postcode({
 		oncomplete : function(data) {
 			document.getElementById('signup-post').value = data.zonecode;
@@ -7,23 +8,12 @@
 	}).open();
 }
 
-function checks() {
-	if ($.trim($("#signin-id").val()) == "") {
-		alert("아이디를 입력해주세요.");
-		$("#signin-id").val("").focus();
-		return false;
-	}
-	if ($.trim($("#signin-password").val()) == "") {
-		alert("비밀번호를 입력해주세요.");
-		$("#signin-password").val("").focus();
-		return false;
-	}
-}
-
+// 비밀번호찾기 창
 function pwFind() {
 	window.open("pwFind", "비밀번호 찾기", "width=450, height=500");
 }
 
+// 비밀번호 찾기
 $(function() {
 	$("#mailtoken").hide();
 });
@@ -41,51 +31,52 @@ function pwFindCheck() {
 	}
 }
 
-//var result;
-//function send() {
-//	$("#mailtoken").show();
+// var result;
+// function send() {
+// $("#mailtoken").show();
 //
-//	var email = $("#signup-email").val();
-//	var pattern = new RegExp(
-//			/^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/);
+// var email = $("#signup-email").val();
+// var pattern = new RegExp(
+// /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/);
 //
-//	if (email == '') {
-//		alert("이메일 주소를 입력해주세요.");
-//		$("#signup-email").val("").focus();
-//		return false;
-//	}
+// if (email == '') {
+// alert("이메일 주소를 입력해주세요.");
+// $("#signup-email").val("").focus();
+// return false;
+// }
 //
-//	if (email.match(pattern) == null) {
-//		alert("이메일 주소 형식이 맞지 않습니다.");
-//		$("#signup-email").val("").focus();
-//		return false;
-//	}
+// if (email.match(pattern) == null) {
+// alert("이메일 주소 형식이 맞지 않습니다.");
+// $("#signup-email").val("").focus();
+// return false;
+// }
 //
-//	$.post("sendmail", {
-//		"email" : email
-//	}, function(data) {
-//		alert("인증번호가 발송되었습니다. 메일함을 확인해주세요.");
-//		result = data;
-//	});
-//}
+// $.post("sendmail", {
+// "email" : email
+// }, function(data) {
+// alert("인증번호가 발송되었습니다. 메일함을 확인해주세요.");
+// result = data;
+// });
+// }
 //
-//function mailcheck() {
-//	var emailtoken = $("#signup-emailtoken").val();
+// function mailcheck() {
+// var emailtoken = $("#signup-emailtoken").val();
 //
-//	if (result == emailtoken) {
-//		alert("인증 성공");
-//		$("#mailtoken").hide();
-//		$("#signup-tel").focus();
+// if (result == emailtoken) {
+// alert("인증 성공");
+// $("#mailtoken").hide();
+// $("#signup-tel").focus();
 //
-//		return false;
-//	} else {
-//		alert("인증 실패");
-//		$("#signup-emailtoken").val("").focus();
+// return false;
+// } else {
+// alert("인증 실패");
+// $("#signup-emailtoken").val("").focus();
 //
-//		return false;
-//	}
-//}
+// return false;
+// }
+// }
 
+// 회원가입 공백검사
 var idchecks = false;
 
 function check() {
@@ -93,41 +84,46 @@ function check() {
 		alert("아이디를 입력해주세요.");
 		$("#signup-id").val("").focus();
 		return false;
-	}
-	if ($.trim($("#signup-password").val()) == "") {
+	}else if ($.trim($("#signup-password").val()) == "") {
 		alert("비밀번호를 입력해주세요.");
 		$("#signup-password").val("").focus();
 		return false;
-	}
-	if ($.trim($("#signup-password-confirm").val()) == "") {
+	}else if ($.trim($("#signup-password-confirm").val()) == "") {
 		alert("비밀번호 확인을 입력해주세요.");
 		$("#signup-password-confirm").val("").focus();
 		return false;
-	}
-	if ($.trim($("#signup-password").val()) != $.trim($(
+	}else if ($.trim($("#signup-password").val()) != $.trim($(
 			"#signup-password-confirm").val())) {
 		alert("비밀번호가 일치하지 않습니다.");
 		$("#signup-password").val("");
 		$("#signup-password-confirm").val("");
 		$("#signup-password").focus();
 		return false;
-	}
-	if ($.trim($("#signup-name").val()) == "") {
+	}else if($("#signup-id").val() == $("#signup-password").val()){
+        alert("아이디와 비밀번호가 같습니다");
+        $("#signup-password").val("");
+        $("#signup-password").focus();
+        return false;
+      }else if ($.trim($("#signup-name").val()) == "") {
 		alert("이름을 입력해주세요.");
 		$("#signup-name").val("").focus();
 		return false;
-	}
-	if ($.trim($("#signup-jumin1").val()) == "") {
-		alert("주민번호 앞자리 6자리를 입력해주세요.");
-		$("#signup-jumin1").val("").focus();
+	}else if ($.trim($("#signup-jumin1").val()) == "") {
+			alert("주민번호 앞자리를 입력해주세요.");
+			$("#signup-jumin1").val("").focus();			
+			return false;
+	}else if ($.trim($("#signup-jumin1").val()).length != 6) {
+		alert("주민번호는 6자리로 입력해주세요.");
+		$("#signup-jumin1").val("").focus();			
 		return false;
-	}
-	if ($.trim($("#signup-jumin2").val()) == "") {
-		alert("주민번호 뒷자리 7자리를 입력해주세요.");
+	}else if ($.trim($("#signup-jumin2").val()) == "") {
+		alert("주민번호 뒷자리를 입력해주세요.");
 		$("#signup-jumin2").val("").focus();
 		return false;
-	}
-	if ($.trim($("#signup-email").val()) == "") {
+	}else if ($.trim($("#signup-jumin2").val()).length != 7) {
+		alert("주민번호는 7자리로 입력해주세요.");
+		return false;
+	}else if ($.trim($("#signup-email").val()) == "") {
 		alert("이메일을 입력해주세요.");
 		$("#signup-email").val("").focus();
 		return false;
@@ -136,42 +132,39 @@ function check() {
 	 * if ($.trim($("#signup-emailtoken").val()) == "") { alert("인증번호를
 	 * 입력해주세요."); $("#signup-emailtoken").val("").focus(); return false; }
 	 */
-	if ($.trim($("#signup-tel").val()) == "") {
+	else if ($.trim($("#signup-tel").val()) == "") {
 		alert("연락처를 입력해주세요.");
 		$("#signup-tel").val("").focus();
 		return false;
-	}
-	if ($.trim($("#signup-post").val()) == "") {
+	}else if ($.trim($("#signup-post").val()) == "") {
 		alert("우편번호를 입력해주세요.");
 		$("#signup-post").val("").focus();
 		return false;
-	}
-	if ($.trim($("#signup-address").val()) == "") {
+	}else if ($.trim($("#signup-address").val()) == "") {
 		alert("주소를 입력해주세요.");
 		$("#signup-address").val("").focus();
 		return false;
-	}
-	if ($.trim($("#signup-address-detail").val()) == "") {
+	}else if ($.trim($("#signup-address-detail").val()) == "") {
 		alert("상세주소를 입력해주세요.");
 		$("#signup-address-detail").val("").focus();
 		return false;
-	}
-	if (!idchecks) {
+	}else if (!idchecks) {
 		alert("ID중복 버튼을 클릭해주세요.");
 		$("#signup-id").focus();
 		return false;
-	}
-/*	if(confirm("회원가입을 하시겠습니까?")){
-		if(check()!=null){
-		alert("회원가입이 완료되었습니다. 감사합니다.");
-		$("form").submit();  
-		return true;
 	}else{
-		return false;
+		alert("회원가입이 완료되었습니다.");
 	}
-}*/
 }
-
+$('#joinmenu').click(function(){
+	if(idchecks == 0){
+		idcheck();
+	}
+})
+$('#check').click(function(){
+		check();
+	});
+// 우편번호 검색
 function postSearch() {
 	alert("우편번호 검색 버튼을 클릭해주세요.");
 }
@@ -286,11 +279,27 @@ let index = {
 	            // 결과가 정상이면 done 실행
 	            alert("회원가입이 완료되었습니다.");
 	            // console.log(resp);
-	            location.href = "/main";
+	            location.href = "main";
 	        }).fail(function (error) {
 	            // 실패하면 fail 실행
 	            alert("회원가입이 실패하였습니다.");
 	            alert(JSON.stringify(error));
 	        });
 	    }
+	}
+	// 로그인
+	function checks() {
+		var id = $("#signin-id").val();
+		var pw = $("#signin-password").val();
+		
+		if ($.trim($("#signin-id").val()) == "") {
+			alert("아이디를 입력해주세요.");
+			$("#signin-id").val("").focus();
+			return false;
+		}
+		if ($.trim($("#signin-password").val()) == "") {
+			alert("비밀번호를 입력해주세요.");
+			$("#signin-password").val("").focus();
+			return false;
+		}
 	}
