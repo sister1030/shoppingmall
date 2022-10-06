@@ -21,7 +21,7 @@
 	<!-- 회원가입 -->
 	<!-- id:@Mapper에서 정의한 이름을 동일하게 맞춰줘야함, parameterType: 파라미터의 자료형을 넣어줌 -->
 	<insert id="join" parameterType="com.dto.Customer">
-		insert into customer(id,pw,name,jumin1,jumin2,email,tel,post,addr1,addr2)
+		insert into customer(id,pw,name,jumin1,jumin2,email,tel,post,addr1,addr2) 
 		values(#{id},#{pw},#{name},#{jumin1},#{jumin2},#{email},#{tel},#{post},#{addr1},#{addr2})
 	</insert>
 

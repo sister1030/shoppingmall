@@ -8,9 +8,9 @@
 }
 
 function checks() {
-	if ($.trim($("#signin-email").val()) == "") {
+	if ($.trim($("#signin-id").val()) == "") {
 		alert("아이디를 입력해주세요.");
-		$("#signin-email").val("").focus();
+		$("#signin-id").val("").focus();
 		return false;
 	}
 	if ($.trim($("#signin-password").val()) == "") {
@@ -41,50 +41,50 @@ function pwFindCheck() {
 	}
 }
 
-var result;
-function send() {
-	$("#mailtoken").show();
-
-	var email = $("#signup-email").val();
-	var pattern = new RegExp(
-			/^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/);
-
-	if (email == '') {
-		alert("이메일 주소를 입력해주세요.");
-		$("#signup-email").val("").focus();
-		return false;
-	}
-
-	if (email.match(pattern) == null) {
-		alert("이메일 주소 형식이 맞지 않습니다.");
-		$("#signup-email").val("").focus();
-		return false;
-	}
-
-	$.post("sendmail", {
-		"mail" : email
-	}, function(data) {
-		alert("인증번호가 발송되었습니다. 메일함을 확인해주세요.");
-		result = data;
-	});
-}
-
-function mailcheck() {
-	var emailtoken = $("#signup-emailtoken").val();
-
-	if (result == emailtoken) {
-		alert("인증 성공");
-		$("#mailtoken").hide();
-		$("#signup-tel").focus();
-
-		return false;
-	} else {
-		alert("인증 실패");
-		$("#signup-emailtoken").val("").focus();
-
-		return false;
-	}
-}
+//var result;
+//function send() {
+//	$("#mailtoken").show();
+//
+//	var email = $("#signup-email").val();
+//	var pattern = new RegExp(
+//			/^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/);
+//
+//	if (email == '') {
+//		alert("이메일 주소를 입력해주세요.");
+//		$("#signup-email").val("").focus();
+//		return false;
+//	}
+//
+//	if (email.match(pattern) == null) {
+//		alert("이메일 주소 형식이 맞지 않습니다.");
+//		$("#signup-email").val("").focus();
+//		return false;
+//	}
+//
+//	$.post("sendmail", {
+//		"email" : email
+//	}, function(data) {
+//		alert("인증번호가 발송되었습니다. 메일함을 확인해주세요.");
+//		result = data;
+//	});
+//}
+//
+//function mailcheck() {
+//	var emailtoken = $("#signup-emailtoken").val();
+//
+//	if (result == emailtoken) {
+//		alert("인증 성공");
+//		$("#mailtoken").hide();
+//		$("#signup-tel").focus();
+//
+//		return false;
+//	} else {
+//		alert("인증 실패");
+//		$("#signup-emailtoken").val("").focus();
+//
+//		return false;
+//	}
+//}
 
 var idchecks = false;
 

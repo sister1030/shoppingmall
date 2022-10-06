@@ -76,7 +76,7 @@ public class CustomerController {
 	// 회원가입 페이지 불러오기
 	@GetMapping("joinpage")
 	public String joinpage() {
-		return "modal";
+		return "madal";
 	}
 	
 	// 회원가입 인증
@@ -85,15 +85,6 @@ public class CustomerController {
 		log.info("customercontroller join()");
         boolean b = customerService.join(customer);
         log.info(customer.toString());
-        log.info(customer.getId());
-        log.info(customer.getPw());
-        log.info(customer.getName());
-        log.info(customer.getJumin1());
-        log.info(customer.getJumin2());
-        log.info(customer.getTel());
-        log.info(customer.getPost());
-        log.info(customer.getAddr1());
-        log.info(customer.getAddr2());
         if(b) {
             return "main";
         }
