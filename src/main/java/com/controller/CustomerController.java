@@ -43,7 +43,7 @@ public class CustomerController {
 		}        
 		
 		// 회원가입 페이지 불러오기
-		@GetMapping("joinpage")
+		@GetMapping("join")
 		public String joinpage() {
 			return "modal";
 		}
@@ -51,7 +51,7 @@ public class CustomerController {
 		// 회원가입 인증
 		@PostMapping(value="join")
 		public String join(Customer customer) throws Exception { 
-			log.info("customercontroller join()");
+			log.info("controller join() ok");
 	        boolean b = customerService.join(customer);
 	        log.info(customer.toString());
 	        if(b) {
@@ -61,32 +61,36 @@ public class CustomerController {
 	    }
 	
 	// 로그인 페이지 불러오기(페이지이동 GetMapping)
-	@GetMapping("loginpage")
+	@GetMapping("login")
 	public String loginpage() {
-		return "modal";
+		return "customer/loginform";
 	}
 	
 	// 로그인 인증(값 상태를 변경하므로 PostMapping)
 	@PostMapping(value="login")
-	@ResponseBody
 	public String login(@RequestParam Map<String, String> map, Model model, HttpSession session) throws Exception {
+		log.info("controller login() Start");
 		try {
 			if (map.get("id") == null || map.get("pw") == null) {
 				model.addAttribute("msg", "아이디 또는 비밀번호를 입력해주세요");
-				return "customer/loginerror";
+				log.info("controller login() fail1");
+				return "customer/loginform";
 			}
 			log.info("customercontroller login()");
-		Customer login = customerService.login(map);
-			if (login != null) {
-				session.setAttribute("customer", login);
+		Customer loginsession = customerService.login(map);
+			if (loginsession != null) {
+				session.setAttribute("loginsession", loginsession);
+				log.info("controller login() success");
 			} else {
 				model.addAttribute("msg", "아이디 또는 비밀번호가 올바르지 않습니다.");
-				return "customer/loginerror";
+				log.info("controller login() fail2");
+				return "customer/loginform";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("msg", "로그인 중 문제가 발생했습니다.");
-			return "customer/loginerror";
+			log.info("controller login() fail3");
+			return "customer/loginform";
 		}
 		return "main";
 	} // end
