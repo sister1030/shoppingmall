@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Alias("product")
+@Alias("product") 
 public class Product {
 	private int prodno; // 상품번호
 	private String pname; // 상품이름
