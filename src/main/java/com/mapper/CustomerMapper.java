@@ -12,7 +12,7 @@ import com.dto.Customer;
 //스프링에서 Repository는 해당 클래스가 storage, retrieval, search, update 그리고 delete의 기능을 제공하는 클래스를 의미
 
 @Mapper // @Mapper는 해당 interface가 Mapper인터페이스임을 알려줌
-@Repository
+@Repository("CustomerMapper")
 public interface CustomerMapper {
 	// 로그인
 	Customer login(Map<String, String> map)throws Exception; 

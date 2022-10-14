@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.stereotype.Controller;
@@ -51,7 +52,7 @@ public class CustomerController {
 		// 회원가입 인증
 		@PostMapping(value="join")
 		public String join(Customer customer) throws Exception { 
-			log.info("controller join() ok");
+			log.info("controller join() start");
 	        boolean b = customerService.join(customer);
 	        log.info(customer.toString());
 	        if(b) {
@@ -80,6 +81,7 @@ public class CustomerController {
 		Customer loginsession = customerService.login(map);
 			if (loginsession != null) {
 				session.setAttribute("loginsession", loginsession);
+				session.setAttribute("adminchk", loginsession.getAdminchk()); // 관리자 여부 확인
 				log.info("controller login() success");
 			} else {
 				model.addAttribute("msg", "아이디 또는 비밀번호가 올바르지 않습니다.");
@@ -96,10 +98,10 @@ public class CustomerController {
 	} // end
 	
 		// 로그아웃
-		@PostMapping(value = "logout")
-		public String logout(HttpServletRequest request) {
-			HttpSession session = request.getSession();
+		@RequestMapping("logout")
+		public String logout(HttpSession session) {
 			session.invalidate();
+			log.info("controller logout() ok");
 			return "main";
 		}
 	

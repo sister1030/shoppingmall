@@ -6732,7 +6732,12 @@ keyframes placeholder-wave { 100%{
 }
 
 .mb-4 {
-	margin-bottom: 1.5rem !important
+	margin-bottom: 1.5rem !important;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	border: 3px solid rgba(0, 0, 0, 1.0);
+	border-radius: 20px;
+	box-shadow: rgba(0, 0, 0, 0.41) 3px 3px;
 }
 
 .mb-5 {
@@ -7430,7 +7435,8 @@ keyframes placeholder-wave { 100%{
 }
 
 .rounded-3 {
-	border-radius: .75rem !important
+	border-radius: .75rem !important;
+	background-color: white;
 }
 
 .rounded-4 {
@@ -8184,7 +8190,7 @@ keyframes placeholder-wave { 100%{
 	}
 	.py-sm-0 {
 		padding-top: 0 !important;
-		padding-bottom: 0 !important
+		padding-bottom: 0 !important;
 	}
 	.py-sm-1 {
 		padding-top: .25rem !important;
@@ -8205,6 +8211,15 @@ keyframes placeholder-wave { 100%{
 	.py-sm-5 {
 		padding-top: 3rem !important;
 		padding-bottom: 3rem !important
+	}
+	.py-sm-6 {
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;
+		border: 3.5px solid rgba(0, 0, 0, 2.0);
+		border-radius: 9px;
+		box-shadow: rgba(0, 0, 0, 0.41) 3px 3px;
 	}
 	.pt-sm-0 {
 		padding-top: 0 !important
@@ -9382,7 +9397,12 @@ keyframes placeholder-wave { 100%{
 		margin-right: 0 !important
 	}
 	.me-lg-1 {
-		margin-right: .25rem !important
+		margin-right: .25rem !important;
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;
+		border: 3px solid rgba(0, 0, 0, 1.0);
+		border-radius: 20px;
+		box-shadow: rgba(0, 0, 0, 0.41) 3px 3px;
 	}
 	.me-lg-2 {
 		margin-right: .5rem !important

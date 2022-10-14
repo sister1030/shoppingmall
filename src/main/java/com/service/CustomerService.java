@@ -1,10 +1,7 @@
 package com.service;
 
-import java.util.List;
 import java.util.Map;
-
 import org.springframework.transaction.annotation.Transactional;
-
 import com.dto.Customer;
 
 public interface CustomerService {

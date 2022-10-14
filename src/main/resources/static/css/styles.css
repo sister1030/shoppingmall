@@ -4781,8 +4781,8 @@ px
 	border: 3px solid rgba(0, 0, 0, 1.0);
 	border-radius: 20px;
 	box-shadow: rgba(0, 0, 0, 0.41) 3px 3px;
-	margin-left: 20%;
-	margin-right: 20%;
+	/* margin-left: 20%;
+	margin-right: 20%; */
 	background-color: #9e73c9;
 }
 

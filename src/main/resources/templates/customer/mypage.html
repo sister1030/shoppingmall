@@ -7,6 +7,94 @@
 <meta name="description" content="" />
 <meta name="author" content="" />
 <title>YN Case</title>
+<script>
+function openDaumPostcode() {
+	new daum.Postcode({
+		oncomplete : function(data) {				
+			document.getElementById('post').value = data.zonecode;
+			document.getElementById('addr1').value = data.address;				
+		}
+	}).open();
+}
+</script>
+<style>
+.page-loading {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	-webkit-transition: all .4s .2s ease-in-out;
+	transition: all .4s .2s ease-in-out;
+	background-color: #fff;
+	opacity: 0;
+	visibility: hidden;
+	z-index: 9999;
+}
+.page-loading.active {
+	opacity: 1;
+	visibility: visible;
+}
+.page-loading-inner {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	-webkit-transition: opacity .2s ease-in-out;
+	transition: opacity .2s ease-in-out;
+	opacity: 0;
+}
+.page-loading.active>.page-loading-inner {
+	opacity: 1;
+}
+.page-loading-inner>span {
+	display: block;
+	font-size: 1rem;
+	font-weight: normal;
+	color: #666276;;
+}
+.page-spinner {
+	display: inline-block;
+	width: 2.75rem;
+	height: 2.75rem;
+	margin-bottom: .75rem;
+	vertical-align: text-bottom;
+	border: .15em solid #bbb7c5;
+	border-right-color: transparent;
+	border-radius: 50%;
+	-webkit-animation: spinner .75s linear infinite;
+	animation: spinner .75s linear infinite;
+}
+@
+-webkit-keyframes spinner { 100% {
+	-webkit-transform: rotate(360deg);
+	transform: rotate(360deg);
+}
+}
+@
+keyframes spinner { 100% {
+	-webkit-transform: rotate(360deg);
+	transform: rotate(360deg);
+}
+}
+</style>
+<!-- Page loading scripts-->
+<script>
+	(function() {
+		window.onload = function() {
+			var preloader = document.querySelector('.page-loading');
+			preloader.classList.remove('active');
+			setTimeout(function() {
+				preloader.remove();
+			}, 2000);
+		};
+	})();
+</script>
 <!-- Favicon-->
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 <!-- Bootstrap icons-->
@@ -19,17 +107,205 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-<script type="text/javascript" src="js/customer.js"></script>
+<!-- Vendor Styles-->
+<link rel="stylesheet" media="screen" href="vendor/simplebar/dist/simplebar.min.css" />
+<link rel="stylesheet" media="screen" href="vendor/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css" />
+<link rel="stylesheet" media="screen" href="vendor/filepond/dist/filepond.min.css" />
+<!-- Main Theme Styles + Bootstrap-->
+<link rel="stylesheet" media="screen" href="css/theme.min.css">
 </head>
+	<!-- Body-->
 <body style="background-image: url(img/background02.jpg)">
 	<div th:replace="nav.html :: fragment-nav"></div>
 	<div th:replace="header.html :: fragment-header"></div>
-	<form action="@{mypage}">
-	
-	마이페이지
-	
-	</form>
+	<!-- Page loading spinner-->
+	<div class="page-loading active">
+		<div class="page-loading-inner">
+			<div class="page-spinner"></div>
+			<span>Loading...</span>
+		</div>
+	</div>
+	<main class="page-wrapper">
+		<!-- Page content-->
+		<div class="container pt-5 pb-lg-4 mt-5 mb-sm-2">
+			<!-- Page content-->
+			<form method="post" action="@{mypage}" enctype="multipart/form-data">
+				<input type="hidden" name="id" value="${session.loginsession.id} ">
+				<div class="row">
+					<!-- Sidebar-->
+					<aside class="col-lg-4 col-md-5 pe-xl-4 mb-5">
+						<!-- Account nav-->
+						<div class="card card-body border-0 shadow-sm pb-1 me-lg-1">
+							<div class="collapse d-md-block mt-3" id="account-nav">
+								<div class="card-nav">
+									<a class="card-nav-link active" href="myPage"> <i
+										class="fi-user opacity-60 me-2"></i>개인 정보
+									</a> <a class="card-nav-link" href="myBookmarkList"> <i
+										class="fi-bookmark opacity-60 me-2"></i>북마크
+									</a> <a class="card-nav-link" href="myReviewList"> <i
+										class="fi-star opacity-60 me-2"></i>리뷰
+									</a> <a class="card-nav-link" href="myQnaList"> <i
+										class="fi-help opacity-60 me-2"></i>Q&A
+									</a> <a class="card-nav-link" th:href="@{logout}"> <i
+										class="fi-logout opacity-60 me-2"></i>로그아웃
+									</a>
+								</div>
+							</div>
+						</div>
+					</aside>
+					<!-- Content-->
+					<div class="col-lg-8 col-md-7 mb-5">
+						<h1 class="h2">개인 정보</h1>
+						<div class="border rounded-3 p-3 mb-4" id="personal-info">
+							<!-- Name-->
+							<div class="border-bottom pb-2 mb-3">
+								<div class="d-flex align-items-center justify-content-between">
+									<div class="pe-2">
+										<label class="form-label fw-bold">이름</label>
+										<div id="name-value">${session.loginsession.name}</div>
+									</div>
+									<div class="me-n3" data-bs-toggle="tooltip" title="Edit">
+										<a class="nav-link py-0" href="#name-collapse"
+											data-bs-toggle="collapse"><i class="fi-edit"></i></a>
+									</div>
+								</div>
+								<div class="collapse" id="name-collapse"
+									data-bs-parent="#personal-info">
+									<input class="form-control mt-3" type="text" name="name"
+										id="name" data-bs-unset-value="Not specified"
+										value="${detailM.name}">
+								</div>
+							</div>
+							<!-- Password-->
+							<div class="border-bottom pb-2 mb-3">
+								<div class="d-flex align-items-center justify-content-between">
+									<div class="pe-2">
+										<label class="form-label fw-bold">비밀번호</label>
+										<div>${encrypt}</div>
+									</div>
+									<div class="me-n3" data-bs-toggle="tooltip" title="Edit">
+										<a class="nav-link py-0" href="#password-collapse"
+											data-bs-toggle="collapse"><i class="fi-edit"></i></a>
+									</div>
+								</div>
+								<div class="collapse" id="password-collapse"
+									data-bs-parent="#auth-info">
+									<div class="row gx-3 align-items-center my-3">
+										<label class="col-sm-4 col-md-3 col-form-label"
+											for="account-password-current">새로운 비밀번호 :</label> <br>
+										<br>
+										<div class="col-sm-8 col-md-9">
+											<div class="password-toggle">
+												<input class="form-control" type="password" name="pw"
+													id="pw" placeholder="Enter new password" required
+													value="${session.loginsession.pw}"> <label
+													class="password-toggle-btn" aria-label="Show/hide password">
+													<input class="password-toggle-check" type="checkbox"><span
+													class="password-toggle-indicator"></span>
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Email-->
+							<div class="border-bottom pb-2 mb-3">
+								<div class="d-flex align-items-center justify-content-between">
+									<div class="pe-2">
+										<label class="form-label fw-bold">이메일</label>
+										<div id="email-value">${session.loginsession.email}</div>
+									</div>
+									<div class="me-n3" data-bs-toggle="tooltip" title="Edit">
+										<a class="nav-link py-0" href="#email-collapse"
+											data-bs-toggle="collapse"><i class="fi-edit"></i></a>
+									</div>
+								</div>
+								<div class="collapse" id="email-collapse"
+									data-bs-parent="#personal-info">
+									<input class="form-control mt-3" type="email" name="mail"
+										id="mail" data-bs-unset-value="Not specified"
+										value="${detailM.mail}">
+								</div>
+							</div>
+							<!-- Phone number-->
+							<div class="border-bottom pb-2 mb-3">
+								<div class="d-flex align-items-center justify-content-between">
+									<div class="pe-2">
+										<label class="form-label fw-bold">연락처</label>
+										<div id="phone-value">${session.loginsession.tel}</div>
+									</div>
+									<div class="me-n3" data-bs-toggle="tooltip" title="Edit">
+										<a class="nav-link py-0" href="#phone-collapse"
+											data-bs-toggle="collapse"><i class="fi-edit"></i></a>
+									</div>
+								</div>
+								<div class="collapse" id="phone-collapse"
+									data-bs-parent="#personal-info">
+									<input class="form-control mt-3" type="text" name="tel"
+										id="tel" data-bs-unset-value="Not specified"
+										value="${detailM.tel}">
+								</div>
+							</div>
+							<!-- Address-->
+							<div>
+								<div class="d-flex align-items-center justify-content-between">
+									<div class="pe-2">
+										<label class="form-label fw-bold">주소</label>
+										<div id="address-value">${session.loginsession.arr1}</div>
+									</div>
+									<div class="me-n3" data-bs-toggle="tooltip" title="Edit">
+										<a class="nav-link py-0" href="#address-collapse"
+											data-bs-toggle="collapse"><i class="fi-edit"></i></a>
+									</div>
+								</div>
+								<div class="collapse" id="address-collapse"
+									data-bs-parent="#personal-info">
+									<br>
+									<div class="input-group">
+										<input class="form-control" type="text" size="5" name="post"
+											id="post" placeholder="우편번호" value="${detailM.post}">
+										<button class="btn btn-primary" type="button"
+											onclick="openDaumPostcode()">우편번호 검색</button>
+									</div>
+									<input class="form-control mt-3" type="text" name="addr1"
+										id="addr1" data-bs-unset-value="Not specified"
+										placeholder="주소" value="${detailM.addr1}"> <input
+										class="form-control mt-3" type="text" name="addr2" id="addr2"
+										data-bs-unset-value="Not specified" placeholder="상세주소"
+										value="${detailM.addr2}">
+								</div>
+							</div>
+						</div>
+
+						<!-- Button-->
+						<input type="hidden" name="id" value="${sessionScope.id} ">
+						<button class="btn btn-primary px-3 px-sm-4" type="button"
+							onclick="location.href='memberDeleteForm';">
+							<i class="fi-trash me-2"></i>회원 탈퇴
+						</button>
+						<!-- </form> -->
+					</div>
+					<div
+						class="d-flex align-items-center justify-content-between mt-4 pt-4 pb-1"></div>
+				</div>
+			</form>
+		</div>
+	</main>
 	<footer th:replace="footer.html :: fragment-footer"></footer>
+	<!-- Back to top button-->
+	<a class="btn-scroll-top" href="#top" data-scroll><span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span><i class="btn-scroll-top-icon fi-chevron-up"> </i></a>
+	<!-- Vendor scrits: js libraries and plugins-->
+	<script src="vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="vendor/simplebar/dist/simplebar.min.js"></script>
+	<script src="vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+	<script src="vendor/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+	<script src="vendor/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+	<script src="vendor/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.min.js"></script>
+	<script src="vendor/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.min.js"></script>
+	<script src="vendor/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.min.js"></script>
+	<script src="vendor/filepond/dist/filepond.min.js"></script>
+	<!-- Main theme script-->
+	<script src="js/theme.min.js"></script>
 	<!-- Bootstrap core JS-->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

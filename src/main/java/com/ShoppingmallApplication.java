@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = { DataSourceTransactionManagerAutoConfiguration.class, DataSourceAutoConfiguration.class })
+@EnableAutoConfiguration(exclude = { DataSourceTransactionManagerAutoConfiguration.class})
 @ComponentScan(basePackages = "com")
 public class ShoppingmallApplication {
 

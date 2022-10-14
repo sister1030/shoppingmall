@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration // 이 클래스를 통해 bean 등록이나 각종 설정을 하겠다는 표시
 @PropertySource("classpath:application.properties") // 설정파일에서 읽어올 설정 정보들의 경로를 지정          
@@ -40,10 +41,19 @@ public class DataAccessConfig {
 	        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:com/mapper/*.xml"));
 	        return sqlSessionFactoryBean.getObject();
 	    }
-
+	    // SqlSession 을 구현하고 코드에서 SqlSession를 대체
 	    @Bean
 	    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
 	        return new SqlSessionTemplate(sqlSessionFactory);
 	    }
+	    // 파일업로드
+	    @Bean
+	    public CommonsMultipartResolver multipartResolver() {
+	    	CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+	    	multipartResolver.setDefaultEncoding("UTF-8"); //파일 인코딩 설정
+	    	multipartResolver.setMaxUploadSizePerFile(5*1024*1024); // 파일당 업로드 크기 제한(5MB)
+	    	return multipartResolver;
+	    }
+	    
 }
 
