@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Alias("product") 
+@Alias("product")
 public class Product {
 	private int prodno; // 상품번호
 	private String pname; // 상품이름
@@ -20,7 +20,8 @@ public class Product {
 	private int price2; // 판매가
 	private int price3; // 수익
 	private String content; // 상품설명
-	private String imagename; //사진
+	private String imagename; //사진이름
+	private String imagepath; //사진경로
 	private char useryn; // 상품판매여부
 	private char bestyn; // 베스트상품여부
 	private Timestamp regdate; // 등록일

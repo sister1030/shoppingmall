@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.MainMapper">
+
+	<!--@Mapper.xml -->
+	<!--select, insert, update 그리고 delete와 같인 SQL문들을 설정하는 코드들을 포함하는 Mybatis의 
+		파일 -->
+
+	<!-- 회원정보 불러오기 -->
+	<!-- id:@Mapper에서 정의한 이름을 동일하게 맞춰줘야함, parameterType: 파라미터의 자료형을 넣어줌 resultType 
+		: select 된 데이터를 반환할 (그릇)을 정해주는것 -->
+	<select id="customerinfo" parameterType="String" resultType="com.dto.Customer">
+		select * from customer where id=#{id, jdbcType=VARCHAR}
+	</select>
+
+	 <!--상품 목록 -->
+	<select id="list" resultType="com.dto.Product">
+		 <![CDATA[
+		select @rownum := @rownum + 1 as rownum, p.* from product p,(select @rownum := 0) tmp order by prodno asc
+		]]>
+	</select>
+
+</mapper>

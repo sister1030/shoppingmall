@@ -9,8 +9,16 @@
 	<!-- 상품등록 -->
 	<!-- id:@Mapper에서 정의한 이름을 동일하게 맞춰줘야함, parameterType: 파라미터의 자료형을 넣어줌 -->
 	<insert id="upload" parameterType="com.dto.Product">
-		insert into Product(pname,pkind,price1,price2,content,imagename) 
-		values(#{pname},#{pkind},#{price1},#{price2},#{content},#{imagename})
+		insert into Product(pname,pkind,price1,price2,content,imagename,imagepath) 
+		values(#{pname},#{pkind},#{price1},#{price2},#{content},#{imagename},#{imagepath})
 	</insert>
-
+	
+	<!-- 상품리스트  -->
+	<select id="productlist" parameterType="int" resultType="com.dto.Product">
+		 <![CDATA[
+		select @rownum := @rownum + 1 as rownum, p.* from product p,(select @rownum := 0) tmp order by prodno asc
+		where rnum >= ((#{page}-1) * 5+1)  and rnum <= (#{page} * 5)
+		]]>
+	</select>
+	
 </mapper>

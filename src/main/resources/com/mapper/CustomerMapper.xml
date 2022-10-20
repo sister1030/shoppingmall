@@ -36,12 +36,18 @@
 		parameterType="customer">
 		select * from customer where id=#{id} and name=#{name}
 	</select> -->
+	<!--회원정보보기 -->
+	<select id="customerinfo" parameterType="String" resultType="com.dto.Customer">
+		select * from customer where id=#{id}
+	</select>
+	
+	
 
 	<!--회원수정 -->
-<!-- 	<update id="customerupdate" parameterType="com.dto.Customer">
+	<update id="customermodify" parameterType="com.dto.Customer">
 		update customer set pw=#{pw},name=#{name},email=#{email},tel=#{tel} where id=#{id}
 	</update>
- -->
+
 	<!--회원탈퇴 -->
 	<delete id="customerdelete">
 		delete from customer where id=#{id}

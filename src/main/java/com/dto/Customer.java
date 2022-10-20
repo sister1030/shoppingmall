@@ -25,6 +25,6 @@ public class Customer {
 	private String addr1; // 주소
 	private String addr2; // 상세주소
 	private char useyn; // 탈퇴여부
-	private int adminchk; // 탈퇴여부
+	private int adminchk; // 회원구분
 	private Timestamp regdate; // 가입일
 }

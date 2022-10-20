@@ -23,14 +23,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.dto.Customer;
 import com.service.CustomerService;
 
+import lombok.RequiredArgsConstructor;
+
 
 @Controller("customercontroller") // Controller를 특정지을 수 있도록 한 어노테이션
+@RequiredArgsConstructor
 public class CustomerController {
 	
 	private final Logger log = LoggerFactory.getLogger(CustomerController.class);
 	
-	@Autowired // Autowired된 객체는 사용자가 직접 new로 생성하는 것이 아닌 Spring이 객체를 생성해서 주입
-	private CustomerService customerService;
+	private final CustomerService customerService;
 	
 	// 아이디 중복확인
 		// @ResponseBody : 서버로 보낸 json데이터를 자바 객체로 매핑
@@ -64,7 +66,7 @@ public class CustomerController {
 	// 로그인 페이지 불러오기(페이지이동 GetMapping)
 	@GetMapping("login")
 	public String loginpage() {
-		return "customer/loginform";
+		return "customer/login";
 	}
 	
 	// 로그인 인증(값 상태를 변경하므로 PostMapping)
@@ -75,24 +77,24 @@ public class CustomerController {
 			if (map.get("id") == null || map.get("pw") == null) {
 				model.addAttribute("msg", "아이디 또는 비밀번호를 입력해주세요");
 				log.info("controller login() fail1");
-				return "customer/loginform";
+				return "customer/login";
 			}
 			log.info("customercontroller login()");
 		Customer loginsession = customerService.login(map);
 			if (loginsession != null) {
 				session.setAttribute("loginsession", loginsession);
-				session.setAttribute("adminchk", loginsession.getAdminchk()); // 관리자 여부 확인
+				model.addAttribute("admin", loginsession.getAdminchk()); // 관리자 확인
 				log.info("controller login() success");
 			} else {
 				model.addAttribute("msg", "아이디 또는 비밀번호가 올바르지 않습니다.");
 				log.info("controller login() fail2");
-				return "customer/loginform";
+				return "customer/login";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("msg", "로그인 중 문제가 발생했습니다.");
 			log.info("controller login() fail3");
-			return "customer/loginform";
+			return "customer/login";
 		}
 		return "main";
 	} // end
@@ -163,4 +165,63 @@ public class CustomerController {
 			return "customer/mypage";
 		}
 		
+	/*
+	 * // 회원수정페이지에 회원정보 불러오기
+	 * 
+	 * @GetMapping("customerinfo") public String customerinfo(HttpSession session,
+	 * Model model) throws Exception {
+	 * 
+	 * // 세션에 있는 ID정보 저장 String id = (String) session.getAttribute("id");
+	 * log.info("customerinfo id :"+id);
+	 * 
+	 * // 서비스안의 회원정보보기 메소드 호출 Customer customer = customerService.customerinfo(id);
+	 * 
+	 * // 정보를 저장한 후 페이지 이동 model.addAttribute("customer",customer);
+	 * log.info("customerinfo :"+ customer);
+	 * 
+	 * return "customer/mypage"; }
+	 */
+		
+		// 회원수정페이지
+		@GetMapping("customermodify")
+		public String customermodifypage(HttpSession session,Model model)throws Exception {
+			log.info("controller modifypage() Start");
+			// 회원정보 보기의 3단계를 한줄로 표현
+			model.addAttribute("customer",customerService.customerinfo(session.getAttribute("id")));
+			return "customer/mypage";
+		}
+		
+		// 회원수정
+		@PostMapping("customermodify")
+		public String customermodify(Customer customer) throws Exception {
+			log.info("controller modify() Start");
+			
+			customerService.customermodify(customer);
+			
+			return "customer/mypage";
+		}
+		
+		// 회원삭제페이지
+		@GetMapping("customerdelete")
+		public String customerdeletepage(HttpSession session)throws Exception {
+			log.info("controller deletepage() Start");
+			// 세션제어
+			String id = (String) session.getAttribute("id");
+			if(id == null) {
+				return "main";
+			}
+			return "customer/delete";
+		}
+		
+		// 회원정보삭제
+		@PostMapping("customerdelete")
+		public String customerdelete(HttpSession session,Customer customer)throws Exception{
+			// 파라미터값 저장후 전달받은 정보를 가지고 삭제 동작 처리이동
+			log.info("controller delete() Start"+customer);
+			// Sevice 객체
+			customerService.customerdelete(customer);
+			// 세션 초기화
+			session.invalidate();
+			return "customer/delete";
+		}
 }

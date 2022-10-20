@@ -129,8 +129,8 @@ keyframes spinner { 100% {
 		<!-- Page content-->
 		<div class="container pt-5 pb-lg-4 mt-5 mb-sm-2">
 			<!-- Page content-->
-			<form method="post" action="@{mypage}" enctype="multipart/form-data">
-				<input type="hidden" name="id" value="${session.loginsession.id} ">
+			<form method="post" th:action="@{customermodify}" th:object="${customer}">
+				<input type="hidden" name="id" value="${customer.id} ">
 				<div class="row">
 					<!-- Sidebar-->
 					<aside class="col-lg-4 col-md-5 pe-xl-4 mb-5">
@@ -162,7 +162,7 @@ keyframes spinner { 100% {
 								<div class="d-flex align-items-center justify-content-between">
 									<div class="pe-2">
 										<label class="form-label fw-bold">이름</label>
-										<div id="name-value">${session.loginsession.name}</div>
+										<div id="name-value">${customer.name}</div>
 									</div>
 									<div class="me-n3" data-bs-toggle="tooltip" title="Edit">
 										<a class="nav-link py-0" href="#name-collapse"
@@ -173,7 +173,7 @@ keyframes spinner { 100% {
 									data-bs-parent="#personal-info">
 									<input class="form-control mt-3" type="text" name="name"
 										id="name" data-bs-unset-value="Not specified"
-										value="${detailM.name}">
+										value="${customer.name}">
 								</div>
 							</div>
 							<!-- Password-->
@@ -198,7 +198,7 @@ keyframes spinner { 100% {
 											<div class="password-toggle">
 												<input class="form-control" type="password" name="pw"
 													id="pw" placeholder="Enter new password" required
-													value="${session.loginsession.pw}"> <label
+													value="${customer.pw}"> <label
 													class="password-toggle-btn" aria-label="Show/hide password">
 													<input class="password-toggle-check" type="checkbox"><span
 													class="password-toggle-indicator"></span>
@@ -213,7 +213,7 @@ keyframes spinner { 100% {
 								<div class="d-flex align-items-center justify-content-between">
 									<div class="pe-2">
 										<label class="form-label fw-bold">이메일</label>
-										<div id="email-value">${session.loginsession.email}</div>
+										<div id="email-value">${customer.email}</div>
 									</div>
 									<div class="me-n3" data-bs-toggle="tooltip" title="Edit">
 										<a class="nav-link py-0" href="#email-collapse"
@@ -224,7 +224,7 @@ keyframes spinner { 100% {
 									data-bs-parent="#personal-info">
 									<input class="form-control mt-3" type="email" name="mail"
 										id="mail" data-bs-unset-value="Not specified"
-										value="${detailM.mail}">
+										value="${customer.email}">
 								</div>
 							</div>
 							<!-- Phone number-->
@@ -232,7 +232,7 @@ keyframes spinner { 100% {
 								<div class="d-flex align-items-center justify-content-between">
 									<div class="pe-2">
 										<label class="form-label fw-bold">연락처</label>
-										<div id="phone-value">${session.loginsession.tel}</div>
+										<div id="phone-value">${customer.tel}</div>
 									</div>
 									<div class="me-n3" data-bs-toggle="tooltip" title="Edit">
 										<a class="nav-link py-0" href="#phone-collapse"
@@ -243,7 +243,7 @@ keyframes spinner { 100% {
 									data-bs-parent="#personal-info">
 									<input class="form-control mt-3" type="text" name="tel"
 										id="tel" data-bs-unset-value="Not specified"
-										value="${detailM.tel}">
+										value="${customer.tel}">
 								</div>
 							</div>
 							<!-- Address-->
@@ -251,7 +251,7 @@ keyframes spinner { 100% {
 								<div class="d-flex align-items-center justify-content-between">
 									<div class="pe-2">
 										<label class="form-label fw-bold">주소</label>
-										<div id="address-value">${session.loginsession.arr1}</div>
+										<div id="address-value">${customer.arr1}</div>
 									</div>
 									<div class="me-n3" data-bs-toggle="tooltip" title="Edit">
 										<a class="nav-link py-0" href="#address-collapse"
@@ -263,24 +263,24 @@ keyframes spinner { 100% {
 									<br>
 									<div class="input-group">
 										<input class="form-control" type="text" size="5" name="post"
-											id="post" placeholder="우편번호" value="${detailM.post}">
+											id="post" placeholder="우편번호" value="${customer.post}">
 										<button class="btn btn-primary" type="button"
 											onclick="openDaumPostcode()">우편번호 검색</button>
 									</div>
 									<input class="form-control mt-3" type="text" name="addr1"
 										id="addr1" data-bs-unset-value="Not specified"
-										placeholder="주소" value="${detailM.addr1}"> <input
+										placeholder="주소" value="${customer.addr1}"> <input
 										class="form-control mt-3" type="text" name="addr2" id="addr2"
 										data-bs-unset-value="Not specified" placeholder="상세주소"
-										value="${detailM.addr2}">
+										value="${customer.addr2}">
 								</div>
 							</div>
 						</div>
 
 						<!-- Button-->
-						<input type="hidden" name="id" value="${sessionScope.id} ">
+						<input type="hidden" name="id" value="${customer.id} ">
 						<button class="btn btn-primary px-3 px-sm-4" type="button"
-							onclick="location.href='memberDeleteForm';">
+							onclick="|location.href=@{customer/delete}'|;">
 							<i class="fi-trash me-2"></i>회원 탈퇴
 						</button>
 						<!-- </form> -->

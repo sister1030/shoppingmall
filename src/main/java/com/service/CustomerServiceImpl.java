@@ -1,9 +1,7 @@
 package com.service;
 
-import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +17,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional //트랜잭션 보장이 된 메소드로 설정
 @RequiredArgsConstructor //생성자 자동 생성
 public class CustomerServiceImpl implements CustomerService {
-	// 회원가입 시 저장시간을 넣어줄 DateTime형
-//    SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd HH:mm:sss");
-//    Date time = new Date();
-//    String localTime = format.format(time);
 	
 	private final CustomerMapper customerMapper;
 	
@@ -55,8 +49,17 @@ public class CustomerServiceImpl implements CustomerService {
 	// 회원탈퇴
 	@Override
 	public int customerdelete(Customer customer)throws Exception {
-		// TODO Auto-generated method stub
 		return customerMapper.customerdelete(customer);
+	}
+	// 회원정보 불러오기
+	@Override
+	public Customer customerinfo(Object object) throws Exception {
+		return customerMapper.customerinfo(object);
+	}
+	// 회원정보 수정
+	@Override
+	public String customermodify(Customer customer) throws Exception {
+		return customerMapper.customermodify(customer);
 	}
 	// 비밀번호 찾기
 //	@Override

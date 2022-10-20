@@ -1,8 +1,12 @@
 package com.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
+import com.dto.Pager;
 import com.dto.Product;
 import com.mapper.ProductMapper;
 
@@ -21,5 +25,23 @@ public class ProductServicelmpl implements ProductService{
 		int n = productMapper.upload(product);
 		return n > 0;
 	}
+
+	// 파일 목록
+	@Override
+	public List<Product> productlist(int page) throws Exception {
+		return productMapper.productlist();
+	}
+	
+	@Override
+	public int count() throws Exception {
+		return productMapper.count();
+	}
+
+	// 페이징
+	@Override
+	public Pager paging(Pager pager) throws Exception {
+		return productMapper.paging(pager);
+	}
+
 
 }

@@ -6,7 +6,7 @@ import com.dto.Customer;
 
 public interface CustomerService {
 		// 로그인
-		public Customer login(Map<String, String> map)throws Exception;
+		Customer login(Map<String, String> map)throws Exception;
 		// 아이디중복확인
 		int idcheck(String id)throws Exception; 
 		// 회원가입
@@ -14,11 +14,13 @@ public interface CustomerService {
 		boolean join(Customer customer)throws Exception;
 		// 목록조회
 		//List<Customer> customerlist()throws Exception;
-		// 회원수정
-		//int customerupdate(Customer customer)throws Exception;
 		// 회원탈퇴
 		int customerdelete(Customer customer)throws Exception;
 		// 비밀번호 찾기
 	//	public Customer pwFindOk(Customer customer)throws Exception;
+		// 회원정보 불러오기
+		Customer customerinfo(Object object)throws Exception;
+		// 회원정보수정
+		String customermodify(Customer customer)throws Exception;
 				
 }
