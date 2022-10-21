@@ -30,13 +30,13 @@
 	<div th:replace="modal.html :: fragment-modal"></div>
 		<div class="modal-content" style="max-width: 450px;">
 			<div class="modal-body px-0 py-2 py-sm-6">
-				<div class="row mx-2 align-items-center">
+				<div class="row mx-2 align-items-centered">
 					<div class="col-md-12 px-5 pt-5 pb-5 px-sm-8 pb-sm-8 pt-md-8">
 						<a class="btn btn-outline-warning d-block w-100 mb-3"
 							onclick="popupKakaoLogin()" href="#"> <i
 							class="fi-chat-circle fs-lg me-1"></i> 카카오로 로그인하기
 						</a>
-						<div class="d-flex align-items-center py-3 mb-1">
+						<div class="d-flex align-items-centered py-3 mb-1">
 							<hr class="w-100">
 							<div class="px-3">Or</div>
 							<hr class="w-100">
@@ -52,7 +52,7 @@
 									</div>
 									<div class="mb-3">
 										<div
-											class="d-flex align-items-center justify-content-between mb-2">
+											class="d-flex align-items-centered justify-content-between mb-2">
 											<label class="form-label mb-0" for="signin-password">비밀번호</label>
 											<a class="fs-sm" th:href="@{#pwfind-modal}"
 												data-bs-toggle="modal" data-bs-dismiss="modal">비밀번호를

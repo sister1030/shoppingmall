@@ -17,6 +17,8 @@ public interface ProductMapper {
 	// 상품 목록
 	List<Product> productlist()throws Exception;
 	Integer count()throws Exception;
-	// 페이징
-	Pager paging(Pager pager) throws Exception;
+	// 상세 페이지
+	Product productdetail(int prodno)throws Exception;
+	// 목록
+	List<Product> list()throws Exception;
 }

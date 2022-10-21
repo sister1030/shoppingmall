@@ -14,6 +14,8 @@ public interface ProductService {
 	// 상품 목록
 	List<Product> productlist(int page)throws Exception;
 	int count()throws Exception;
-	// 페이징
-	Pager paging(Pager pager) throws Exception;
+	// 상세 페이지
+	Product productdetail(int prodno)throws Exception;
+	// 목록
+	public List<Product> list() throws Exception;
 }

@@ -5400,8 +5400,15 @@ px
 }
 
 .card-img, .card-img-top {
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
+	/* border-top-right-radius: 40px; */
+}
+
+.card-img, .card-img-toped {
 	border-top-left-radius: 40px;
 	border-top-right-radius: 40px;
+	width: 100%;
 }
 
 .card-img, .card-img-bottom {
@@ -8140,7 +8147,11 @@ important
 }
 
 .d-flex {
+	text-align: center;
 	display: flex !important;
+	position: relative;
+	top: 20px;
+	left: 180px;
 }
 
 .d-inline-flex {
@@ -8780,6 +8791,10 @@ important
 
 .mb-5 {
 	margin-bottom: 3rem !important;
+}
+
+.mb-6 {
+	margin-bottom: 0 !important;
 }
 
 .mb-auto {

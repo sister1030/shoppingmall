@@ -31,17 +31,19 @@ public class ProductServicelmpl implements ProductService{
 	public List<Product> productlist(int page) throws Exception {
 		return productMapper.productlist();
 	}
-	
 	@Override
 	public int count() throws Exception {
 		return productMapper.count();
 	}
-
-	// 페이징
+	// 상세 페이지
 	@Override
-	public Pager paging(Pager pager) throws Exception {
-		return productMapper.paging(pager);
+	public Product productdetail(int prodno) throws Exception {
+		return productMapper.productdetail(prodno);
 	}
-
+	// 목록
+	@Override
+	public List<Product> list() throws Exception {
+		return productMapper.list();
+	}
 
 }

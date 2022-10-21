@@ -21,4 +21,16 @@
 		]]>
 	</select>
 	
+	<!-- 상품상세페이지  -->
+	<select id="productdetail" parameterType="int" resultType="com.dto.Product">
+		 select pname,pkind,price2,content,imagepath from product where prodno=#{prodno}
+	</select>
+	
+	<!--상품 목록 -->
+	<select id="list" resultType="com.dto.Product">
+		 <![CDATA[
+		select @rownum := @rownum + 1 as rownum, p.* from product p,(select @rownum := 0) tmp where @rownum <= 3 order by prodno asc
+		]]>
+	</select>
+	
 </mapper>

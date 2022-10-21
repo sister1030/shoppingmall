@@ -22,7 +22,6 @@ public class MainService {
 	public Customer customerinfo(String id) throws Exception {
 		return mainMapper.customerinfo(id);
 	}
-
 	public List<Product> list() throws Exception {
 		return mainMapper.list();
 	}

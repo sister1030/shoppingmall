@@ -103,7 +103,14 @@ public class ProductController {
 	
 	// 상품상세페이지
 	@GetMapping("productdetail")
-	public String productdetail() {
+	public String productdetail(@RequestParam("prodno")int prodno,Model model)throws Exception {
+		log.info("controller productdetail start");
+		List<Product> list = new ArrayList<Product>();
+		list = productService.list();	
+		Product product = productService.productdetail(prodno);
+		model.addAttribute("list",list);
+		model.addAttribute("product",product);
+		log.info(product.toString());
 		return "product/productdetail";
 	}
 }

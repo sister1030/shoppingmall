@@ -38,7 +38,7 @@
 				<div class="col mb-5" th:each="product : ${list}">
 					<div class="card h-100">
 						<!-- Product image-->
-						<img class="card-img-top img-responsive"
+						<img class="card-img-toped img-responsive"
 							th:src="@{${product.imagepath}}"
 							alt="..." />
 						<!-- Product details-->
@@ -54,8 +54,7 @@
 						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
 							<div class="text-center">
 								<a class="btn btn-outline-dark mt-auto"
-									th:href="@{orderdetail}">View
-									options</a>
+									th:href="@{productdetail?prodno={prodno}(prodno=${product.prodno})}">View options</a>
 							</div>
 						</div>
 					</div>
